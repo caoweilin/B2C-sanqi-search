@@ -1,0 +1,9 @@
+com\saniq\mq\handler\ItemHandler\ItemHandler.class
+com\sanqi\web\httpclient\IdleConnectionEvictor.class
+com\sanqi\search\bean\Item.class
+com\sanqi\web\httpclient\HttpResult.class
+com\sanqi\search\controller\SearchController.class
+com\sanqi\search\service\ApiService.class
+com\sanqi\search\service\SearchService.class
+com\sanqi\search\service\ItemService.class
+com\sanqi\search\bean\SearchResult.class

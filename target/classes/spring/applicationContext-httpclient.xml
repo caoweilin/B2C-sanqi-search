@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<bean id="connectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
+		<property name="maxTotal" value="${http.MaxTotal}"/>
+		<property name="defaultMaxPerRoute" value="${http.DefaultMaxPerRoute}"></property>
+	</bean>
+	
+	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder">
+		<property name="connectionManager" ref="connectionManager">
+		 </property>
+	</bean>
+
+	<bean class="org.apache.http.impl.client.CloseableHttpClient" factory-bean="httpClientBuilder"
+	factory-method="build" scope="prototype">	
+	</bean>
+
+	<bean id="requestConfigBuilder" class="org.apache.http.client.config.RequestConfig.Builder">
+		<property name="connectionRequestTimeout" value="500"/>
+		<property name="connectTimeout" value="2000"/>
+		<property name="socketTimeout" value="10000"/>
+		<property name="staleConnectionCheckEnabled" value="true"/>
+	</bean>
+	
+	<!-- 请求配置对象 -->
+	<bean class="org.apache.http.client.config.RequestConfig" factory-bean="requestConfigBuilder"
+	factory-method="build">
+	</bean>
+	
+	<bean class="com.sanqi.web.httpclient.IdleConnectionEvictor">
+		<constructor-arg index="0" ref="connectionManager"/>
+	</bean>
+	
+</beans>
